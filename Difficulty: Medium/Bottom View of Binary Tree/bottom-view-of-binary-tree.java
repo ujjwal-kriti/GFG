@@ -11,46 +11,49 @@ class Node {
     }
 }
 */
+/*
+class Node {
+    int data;
+    Node left, right;
 
-class Solution {
-    
-        // code here
-        static class pair{
-            Node node;
-            int line;
-            pair(Node node,int line){
-                this.node=node;
-                this.line=line;
-            }
-        }
-        public ArrayList<Integer> bottomView(Node root) {
-        ArrayList<Integer>result=new ArrayList<>();
-        if(root==null) return result;
-        Queue<pair>queue=new LinkedList<>();
-        TreeMap<Integer,Integer>map=new TreeMap<>();
-        queue.offer(new pair(root,0));
-        
-        while (!queue.isEmpty()) {
-            pair curr = queue.poll();
-            Node node = curr.node;
-            int line = curr.line; 
-            
-            /// 🔥 MAIN CHANGE FOR BOTTOM VIEW
-                map.put(line, node.data);
-            
-
-            if (node.left != null) {
-                queue.offer(new pair(node.left, line - 1));
-            }
-
-            if (node.right != null) {
-                queue.offer(new pair(node.right, line + 1));
-            }
-        }
-        for (int val : map.values()) {
-            result.add(val);
-        }
-        return result;
-
+    Node(int val) {
+        this.data = val;
+        this.left = null;
+        this.right = null;
     }
+}
+*/
+class Solution {
+          class pair{
+              Node node;
+              int col;
+              pair(Node node,int col){
+                  this.node=node;
+                  this.col=col;
+              }
+          }
+          
+      public ArrayList<Integer> bottomView(Node root) {
+             // TreeMap is used because it keeps keys (columns) sorted automatically
+        // key   -> column number
+        // value -> node value visible from top
+        TreeMap<Integer,Integer>map=new TreeMap<>();
+        Queue<pair>q=new LinkedList<>();
+        q.add(new  pair(root,0));
+        while(!q.isEmpty()){
+            pair p=q.poll();
+            Node node=p.node;
+            int col=p.col;
+            map.put(col,node.data);
+            //left child
+            if(node.left!=null){
+                q.add(new pair(node.left,col-1));
+            }
+            if(node.right!=null){
+                q.add(new pair(node.right,col+1));
+            }
+            
+        }
+        return new ArrayList<>(map.values());
+      }
 }
