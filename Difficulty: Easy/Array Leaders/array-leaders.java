@@ -1,18 +1,20 @@
 class Solution {
     static ArrayList<Integer> leaders(int arr[]) {
-        ArrayList<Integer>list=new ArrayList<>();
-        int maxright=Integer.MIN_VALUE;
-        int n=arr.length;
-        for(int i=n-1;i>=0;i--){
-            if(arr[i]>=maxright){
-                list.add(arr[i]);
-                maxright=arr[i];
-            }
-            
-        }
-        Collections.reverse(list);
-        
-         return list;
-    
+      int n=arr.length;
+      ArrayList<Integer>res=new ArrayList<>();
+      for(int i=0;i<n;i++){
+          boolean leader=true;
+          for(int j=i+1;j<n;j++){
+              
+              if(arr[j]>arr[i]){
+                  leader=false;
+                  break;
+              }
+          }
+          if(leader){
+              res.add(arr[i]);
+          }
+      }
+      return res;
     }
 }
