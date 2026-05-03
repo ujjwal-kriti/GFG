@@ -1,7 +1,7 @@
 class Solution {
 
      public static Boolean isSubsetSum(int arr[], int sum) {
-        // code here----------------reursion--------
+        // ----------------reursion---------------
     //     return  helper(arr,arr.length,sum);
     // }
     // public static  boolean helper(int arr[],int i,int sum){
@@ -12,33 +12,25 @@ class Solution {
     //     }
     //     return helper(arr,i-1,sum);
     
-    //--------------memoization--------------------
-    int n =arr.length;
-        int[][] dp=new int[n+1][sum+1];
-            for(int i=0;i<=n;i++){
-                for(int j=0;j<=sum;j++){
-                    dp[i][j]=-1;
+        
+    //---------------------------------tabulationmethod----------------
+        
+        int n=arr.length;
+        boolean[][] dp=new boolean[n+1][sum+1];
+        for(int i=0;i<n;i++){
+            dp[i][0]=true;
+        }
+        for(int i=1;i<=n;i++){
+            for(int s=1;s<=sum;s++){
+                dp[i][s]=dp[i-1][s];
+                if(arr[i-1]<=s){
+                    dp[i][s]=dp[i][s]||dp[i-1][s-arr[i-1]];
                 }
             }
-        return helper(arr,arr.length,sum,dp);
-    }
-    static boolean helper(int []arr,int i,int sum, int[][]dp){
-        if(sum==0) return true;
-        if(i==0) return false;
-        if(dp[i][sum]!=-1){
-            return dp[i][sum]==1;
         }
-        boolean result;
-        if(arr[i-1]<=sum){
-            result=helper(arr,i-1,sum,dp)|| helper(arr,i-1,sum-arr[i-1],dp);
-        }else{
-            result=helper(arr,i-1,sum,dp);
-        }
-        if(result == true){
-            dp[i][sum] = 1;
-        } else {
-            dp[i][sum] = 0;
-        }
-        return result;
+        
+        return dp[n][sum];
+        
+        
     }
 }
